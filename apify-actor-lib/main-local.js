@@ -3,7 +3,7 @@
  * This file imports from mock instead of real apify package
  */
 
-import { MockActor as Actor } from '../apify-actor-local-service/mock-apify-actor.js';
+import { MockActor as Actor } from '../mock-apify-actor.js';
 import { PlaywrightCrawler } from 'crawlee';
 
 console.log('[Local] 🔧 Using MockActor for local execution');
