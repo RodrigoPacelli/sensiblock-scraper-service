@@ -1,0 +1,467 @@
+{
+  "usableSessionsCount": 12,
+  "retiredSessionsCount": 0,
+  "sessions": [
+    {
+      "id": "session_M1zPIBrTMJ",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:15.499Z",
+      "createdAt": "2025-10-09T21:54:15.499Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_dGa90gchvU",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": [
+          {
+            "key": "wbdFch",
+            "value": "eb078ce1c1a76ad15463874f87560c678fbce4db",
+            "expires": "2025-10-09T21:54:45.824Z",
+            "domain": "edition.cnn.com",
+            "path": "/world",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:17.720Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "SecGpc",
+            "value": "0",
+            "expires": "2025-10-09T22:44:27.172Z",
+            "domain": "cnn.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:17.720Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "countryCode",
+            "value": "BR",
+            "expires": "2025-10-09T22:44:27.172Z",
+            "domain": "cnn.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:17.725Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "stateCode",
+            "value": "MG",
+            "expires": "2025-10-09T22:44:27.172Z",
+            "domain": "cnn.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:17.726Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "FastAB",
+            "value": "0=826,1=031,2=228,3=564,4=961,5=492,6=802,7=167,8=953,9=212,10=038,11=800,12=317,13=720,14=251,15=183,16=787,17=973,18=320,19=621",
+            "expires": "2026-10-09T21:54:15.854Z",
+            "domain": "cnn.com",
+            "path": "/",
+            "secure": true,
+            "httpOnly": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:17.726Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "wbdFch",
+            "value": "93509a351c6408ade6f69186c1c836bb61928c50",
+            "expires": "2025-10-09T21:54:45.854Z",
+            "domain": "edition.cnn.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:17.726Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "usprivacy",
+            "value": "1---",
+            "expires": "2025-10-09T22:44:27.172Z",
+            "domain": "cnn.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:17.726Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "geoData",
+            "value": "varzea da palma|MG|39260-959|BR|SA|-300|broadband|-17.670|-44.710|76014",
+            "expires": "2025-10-09T22:44:27.172Z",
+            "domain": "cnn.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:17.726Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "nexus-web-application-identifier",
+            "value": "e4dccefb-19e4-414e-9fe0-62321f03523f|1760046856894",
+            "expires": "2026-11-13T21:54:16.897Z",
+            "domain": "edition.cnn.com",
+            "path": "/",
+            "hostOnly": true,
+            "creation": "2025-10-09T21:54:17.726Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "OptanonConsent",
+            "value": "isGpcEnabled=0&datestamp=Thu+Oct+09+2025+18%3A54%3A27+GMT-0300+(Brasilia+Standard+Time)&version=202508.2.0&browserGpcFlag=0&isIABGlobal=false&hosts=&consentId=584fb4ac-b1fc-4ca8-94d9-b7a2652e2c3a&interactionCount=0&isAnonUser=1&landingPath=NotLandingPage&AwaitingReconsent=false&groups=BG2656%3A0%2Ccad%3A0%2CBG2658%3A0%2Cpad%3A0%2CBG2657%3A0%2Cpap%3A0%2CBG2660%3A0%2Cpcd%3A0%2CBG2659%3A0%2Cpcp%3A0%2CBG2661%3A0%2Cmap%3A0%2CBG2662%3A0%2Cmcp%3A0%2CBG2663%3A0%2Cmra%3A0%2CBG2664%3A0%2Cpdd%3A0%2CBG2665%3A1%2Csec%3A1%2CBG2666%3A1%2Ctdc%3A1%2Creq%3A1%2Cdsh%3A1%2Cdsl%3A1%2Cscp%3A1%2Cdsa%3A1%2Cdid%3A1%2Cdlk%3A1%2Ccos%3A1",
+            "expires": "2026-10-09T21:54:27.000Z",
+            "domain": "cnn.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:17.726Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "wbdFch",
+            "value": "3a9dd782f679c07daec0ac91568271db714d83e7",
+            "expires": "2025-10-09T21:54:47.905Z",
+            "domain": "edition.cnn.com",
+            "path": "/politics",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:19.073Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "OptanonControl",
+            "value": "ccc=BR&csc=MG&cic=0&otvers=202508.2.0&pctm=0&reg=other-optin&ustcs=1---&tos=0&ds=1&td=1&vers=4.2.5",
+            "expires": "2026-10-09T21:54:27.000Z",
+            "domain": "cnn.com",
+            "path": "/",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:19.073Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "wbdFch",
+            "value": "9015b7ad56f88df3d0cb3fdaf767178cbc64d889",
+            "expires": "2025-10-09T21:54:49.395Z",
+            "domain": "edition.cnn.com",
+            "path": "/business",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:19.493Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "wbdFch",
+            "value": "a787387e70f555ba0bf0d75c87636c3f16d6d269",
+            "expires": "2025-10-09T21:54:49.698Z",
+            "domain": "edition.cnn.com",
+            "path": "/health",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:20.810Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "wbdFch",
+            "value": "32bb8f3e9e25d6bef369e0407550e183561e71df",
+            "expires": "2025-10-09T21:54:50.926Z",
+            "domain": "edition.cnn.com",
+            "path": "/entertainment",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:21.108Z",
+            "lastAccessed": "2025-10-09T21:54:27.172Z"
+          },
+          {
+            "key": "wbdFch",
+            "value": "25a6ad6a132e0e8267fa9ef49f97d6cc90997a79",
+            "expires": "2025-10-09T21:54:52.312Z",
+            "domain": "edition.cnn.com",
+            "path": "/business/tech",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:23.001Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "wbdFch",
+            "value": "10d42f2357de909495b7ce6f8a3c90480e52a485",
+            "expires": "2025-10-09T21:54:51.988Z",
+            "domain": "edition.cnn.com",
+            "path": "/style",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:23.001Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "wbdFch",
+            "value": "caf15a96e13dae7d12d2d35678c642f8296da8b2",
+            "expires": "2025-10-09T21:54:53.180Z",
+            "domain": "edition.cnn.com",
+            "path": "/travel",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:23.302Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "wbdFch",
+            "value": "68fd11d873b1441a523ed1f535db75a48865769f",
+            "expires": "2025-10-09T21:54:53.618Z",
+            "domain": "edition.cnn.com",
+            "path": "/sport",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:24.394Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          },
+          {
+            "key": "wbdFch",
+            "value": "94d08f8295ec0808050f3cdd0cd0c48d20adb029",
+            "expires": "2025-10-09T21:54:54.508Z",
+            "domain": "edition.cnn.com",
+            "path": "/videos",
+            "secure": true,
+            "hostOnly": false,
+            "creation": "2025-10-09T21:54:24.779Z",
+            "lastAccessed": "2025-10-09T21:54:27.173Z"
+          }
+        ]
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:15.502Z",
+      "createdAt": "2025-10-09T21:54:15.502Z",
+      "usageCount": 11,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_1t9oEDTD52",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:15.509Z",
+      "createdAt": "2025-10-09T21:54:15.509Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_4cAHEIqSM7",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:17.847Z",
+      "createdAt": "2025-10-09T21:54:17.847Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_eNbnP3DzU3",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:19.326Z",
+      "createdAt": "2025-10-09T21:54:19.326Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_lmYTz4Gepz",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:19.623Z",
+      "createdAt": "2025-10-09T21:54:19.623Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_ipi6Wahsn5",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:20.858Z",
+      "createdAt": "2025-10-09T21:54:20.858Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_Tv2iSoF4BG",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:21.257Z",
+      "createdAt": "2025-10-09T21:54:21.257Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_FSNkLDRn8j",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:21.932Z",
+      "createdAt": "2025-10-09T21:54:21.932Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_2KRn94H0WJ",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:23.107Z",
+      "createdAt": "2025-10-09T21:54:23.107Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_0AeC8dGSpD",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:23.432Z",
+      "createdAt": "2025-10-09T21:54:23.432Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_VBcSzht869",
+      "cookieJar": {
+        "version": "tough-cookie@6.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-10-09T22:44:24.437Z",
+      "createdAt": "2025-10-09T21:54:24.437Z",
+      "usageCount": 0,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    }
+  ]
+}

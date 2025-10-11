@@ -1,0 +1,9 @@
+{
+  "actorId": "qmjTm7TwfqD4Y4fYg",
+  "actorSpecification": 1,
+  "name": "sensi",
+  "version": "0.0",
+  "buildTag": "latest",
+  "environmentVariables": {},
+  "dockerfile": "./Dockerfile"
+}

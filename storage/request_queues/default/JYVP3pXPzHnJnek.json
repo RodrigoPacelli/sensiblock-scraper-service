@@ -1,0 +1,9 @@
+{
+	"id": "JYVP3pXPzHnJnek",
+	"json": "{\"id\":\"JYVP3pXPzHnJnek\",\"url\":\"https://edition.cnn.com/business\",\"loadedUrl\":\"https://edition.cnn.com/business\",\"uniqueKey\":\"https://edition.cnn.com/business\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"site\":\"edition.cnn.com\",\"source\":\"CNN\",\"section\":\"business\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-10-09T21:54:21.241Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://edition.cnn.com/business",
+	"url": "https://edition.cnn.com/business"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "fwOlxpcMVDhEPo8",
+	"json": "{\"id\":\"fwOlxpcMVDhEPo8\",\"url\":\"https://edition.cnn.com/tech\",\"loadedUrl\":\"https://edition.cnn.com/business/tech\",\"uniqueKey\":\"https://edition.cnn.com/tech\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"site\":\"edition.cnn.com\",\"source\":\"CNN\",\"section\":\"tech\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-10-09T21:54:23.417Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://edition.cnn.com/tech",
+	"url": "https://edition.cnn.com/tech"
+}

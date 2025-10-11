@@ -1,0 +1,9 @@
+{
+	"id": "8uGLTqkAni97Z7p",
+	"json": "{\"id\":\"8uGLTqkAni97Z7p\",\"url\":\"https://edition.cnn.com/sport\",\"loadedUrl\":\"https://edition.cnn.com/sport\",\"uniqueKey\":\"https://edition.cnn.com/sport\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"site\":\"edition.cnn.com\",\"source\":\"CNN\",\"section\":\"sports\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-10-09T21:54:24.913Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://edition.cnn.com/sport",
+	"url": "https://edition.cnn.com/sport"
+}

@@ -1,0 +1,56 @@
+# Dockerfile para Apify Actor Local Service
+# Build otimizado para produção com multi-stage
+
+# Stage 1: Base image
+FROM node:20-alpine AS base
+WORKDIR /app
+
+# Install dependencies for Playwright
+RUN apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont
+
+# Set Playwright to use system Chromium
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
+    PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# Stage 2: Dependencies
+FROM base AS deps
+COPY package*.json ./
+RUN npm ci --production --no-audit --no-fund
+
+# Stage 3: Production image
+FROM base AS runner
+WORKDIR /app
+
+# Copy dependencies from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+
+# Copy application code
+COPY . .
+
+# Copy apify-actor code (dependency)
+COPY ../apify-actor /app/apify-actor
+
+# Create storage directories
+RUN mkdir -p storage/key_value_stores/default storage/datasets/default storage/request_queues/default
+
+# Set proper permissions
+RUN chown -R node:node /app
+
+# Switch to non-root user
+USER node
+
+# Expose port
+EXPOSE 3005
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3005/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start server
+CMD ["npm", "start"]

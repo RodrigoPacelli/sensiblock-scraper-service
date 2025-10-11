@@ -1,0 +1,35 @@
+# Apify actor ignore file
+
+# Development files
+.git
+.gitignore
+*.md
+.eslintrc*
+.vscode
+.idea
+
+# Logs
+*.log
+logs/
+
+# Dependencies (installed during build)
+node_modules/
+
+# Testing files
+test/
+tests/
+*.test.js
+*.spec.js
+
+# Local development
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+storage/

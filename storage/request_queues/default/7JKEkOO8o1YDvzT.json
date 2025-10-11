@@ -1,0 +1,9 @@
+{
+	"id": "7JKEkOO8o1YDvzT",
+	"json": "{\"id\":\"7JKEkOO8o1YDvzT\",\"url\":\"https://edition.cnn.com/health\",\"loadedUrl\":\"https://edition.cnn.com/health\",\"uniqueKey\":\"https://edition.cnn.com/health\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"site\":\"edition.cnn.com\",\"source\":\"CNN\",\"section\":\"health\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-10-09T21:54:20.849Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://edition.cnn.com/health",
+	"url": "https://edition.cnn.com/health"
+}

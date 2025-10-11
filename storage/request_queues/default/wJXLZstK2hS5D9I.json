@@ -1,0 +1,9 @@
+{
+	"id": "wJXLZstK2hS5D9I",
+	"json": "{\"id\":\"wJXLZstK2hS5D9I\",\"url\":\"https://edition.cnn.com\",\"loadedUrl\":\"https://edition.cnn.com/\",\"uniqueKey\":\"https://edition.cnn.com\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"site\":\"edition.cnn.com\",\"source\":\"CNN\",\"section\":\"edition.cnn.com\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-10-09T21:54:19.320Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://edition.cnn.com",
+	"url": "https://edition.cnn.com"
+}

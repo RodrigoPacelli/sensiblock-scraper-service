@@ -1,0 +1,48 @@
+{
+  "name": "sensiblock-news-scraper",
+  "version": "1.0.0",
+  "description": "News scraper actor for major international news websites - compatible with NewsAPI format",
+  "type": "module",
+  "main": "main.js",
+  "author": "SensiBlock",
+  "license": "MIT",
+  "dependencies": {
+    "apify": "^3.1.10",
+    "crawlee": "^3.5.8",
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {
+    "@apify/eslint-config": "^0.4.0",
+    "eslint": "^8.50.0"
+  },
+  "scripts": {
+    "start": "node main.js",
+    "test": "node main.js",
+    "lint": "eslint main.js",
+    "lint:fix": "eslint main.js --fix"
+  },
+  "keywords": [
+    "news",
+    "scraper",
+    "apify",
+    "cnn",
+    "bbc",
+    "reuters",
+    "guardian",
+    "nytimes",
+    "newsapi",
+    "crawler",
+    "playwright"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anthropics/sensiblock-news-scraper"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "apify": {
+    "actorSpecification": 1,
+    "dockerfile": "./Dockerfile"
+  }
+}

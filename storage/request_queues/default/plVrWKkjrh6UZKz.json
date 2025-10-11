@@ -1,0 +1,9 @@
+{
+	"id": "plVrWKkjrh6UZKz",
+	"json": "{\"id\":\"plVrWKkjrh6UZKz\",\"url\":\"https://edition.cnn.com/entertainment\",\"loadedUrl\":\"https://edition.cnn.com/entertainment\",\"uniqueKey\":\"https://edition.cnn.com/entertainment\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"site\":\"edition.cnn.com\",\"source\":\"CNN\",\"section\":\"entertainment\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-10-09T21:54:21.924Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://edition.cnn.com/entertainment",
+	"url": "https://edition.cnn.com/entertainment"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "dqJtMpZRUB5zBr1",
+	"json": "{\"id\":\"dqJtMpZRUB5zBr1\",\"url\":\"https://edition.cnn.com/travel\",\"loadedUrl\":\"https://edition.cnn.com/travel\",\"uniqueKey\":\"https://edition.cnn.com/travel\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"site\":\"edition.cnn.com\",\"source\":\"CNN\",\"section\":\"travel\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-10-09T21:54:24.422Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://edition.cnn.com/travel",
+	"url": "https://edition.cnn.com/travel"
+}

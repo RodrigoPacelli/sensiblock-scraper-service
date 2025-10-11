@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  apify-actor-cloud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apify-actor-cloud-service
+    restart: unless-stopped
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - NODE_ENV=production
+      - NODE_OPTIONS=--max-old-space-size=1024
+      - PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+      - PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium-browser
+      - LOG_LEVEL=info
+      # Proxy configuration
+      - PROXY_PROVIDER=none
+      - IPROYAL_ENABLED=false
+      - ZYTE_ENABLED=false
+    volumes:
+      # Persist storage data
+      - ./storage:/app/storage
+      # Mount apify-actor code
+      - ../apify-actor:/app/apify-actor
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3005/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    networks:
+      - apify-network
+    deploy:
+      resources:
+        limits:
+          memory: 1.5G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+networks:
+  apify-network:
+    driver: bridge

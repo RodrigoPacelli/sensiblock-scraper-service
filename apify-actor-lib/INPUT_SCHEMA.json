@@ -1,0 +1,99 @@
+{
+  "title": "News Scraper - Global News Aggregator",
+  "description": "Scrapes news articles from major international news websites including all sections (World, Politics, Business, etc.) and returns data in NewsAPI-compatible format",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "sites": {
+      "title": "Target Websites",
+      "type": "array",
+      "description": "List of news websites to scrape. Leave empty to scrape all supported sites.",
+      "editor": "select",
+      "default": [
+        "edition.cnn.com",
+        "www.bbc.com",
+        "www.reuters.com",
+        "www.theguardian.com",
+        "www.nytimes.com",
+        "apnews.com"
+      ],
+      "items": {
+        "type": "string",
+        "enum": [
+          "edition.cnn.com",
+          "www.bbc.com",
+          "www.reuters.com",
+          "www.theguardian.com",
+          "www.nytimes.com",
+          "apnews.com"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "maxArticlesPerSite": {
+      "title": "Max Articles Per Section",
+      "type": "integer",
+      "description": "Maximum number of articles to extract from EACH section (Homepage, World, Politics, Business, etc.). CNN has 11 sections. Set to a high value (9999) to capture all articles without limit.",
+      "default": 9999,
+      "minimum": 1,
+      "maximum": 10000,
+      "unit": "articles"
+    },
+    "timeout": {
+      "title": "Page Timeout",
+      "type": "integer",
+      "description": "Maximum time to wait for each page to load (in milliseconds)",
+      "default": 30000,
+      "minimum": 10000,
+      "maximum": 120000,
+      "unit": "ms"
+    },
+    "dateFilter": {
+      "title": "Date Filter",
+      "type": "string",
+      "description": "Filter articles by publication date",
+      "editor": "select",
+      "default": "today",
+      "enum": ["today", "week"],
+      "enumTitles": ["Today only", "Last 7 days"]
+    },
+    "outputFormat": {
+      "title": "Output Format",
+      "type": "string",
+      "description": "Choose the output format for the scraped data",
+      "editor": "select",
+      "default": "newsapi",
+      "enum": ["newsapi", "simple"],
+      "enumTitles": ["NewsAPI Compatible", "Simple Array"]
+    },
+    "includeImages": {
+      "title": "Include Images",
+      "type": "boolean",
+      "description": "Whether to extract image URLs from articles",
+      "default": true
+    },
+    "removeDuplicates": {
+      "title": "Remove Duplicates",
+      "type": "boolean",
+      "description": "Remove duplicate articles based on URL",
+      "default": true
+    },
+    "proxyGroups": {
+      "title": "Proxy Groups",
+      "type": "array",
+      "description": "Apify proxy groups to use (leave empty for auto)",
+      "editor": "stringList",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "debug": {
+      "title": "Debug Mode",
+      "type": "boolean",
+      "description": "Enable detailed logging for debugging",
+      "default": false
+    }
+  },
+  "required": []
+}

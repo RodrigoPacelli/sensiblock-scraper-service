@@ -1,0 +1,9 @@
+{
+	"id": "GkK1zVhaq3af71Y",
+	"json": "{\"id\":\"GkK1zVhaq3af71Y\",\"url\":\"https://edition.cnn.com/politics\",\"loadedUrl\":\"https://edition.cnn.com/politics\",\"uniqueKey\":\"https://edition.cnn.com/politics\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"site\":\"edition.cnn.com\",\"source\":\"CNN\",\"section\":\"politics\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-10-09T21:54:19.615Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://edition.cnn.com/politics",
+	"url": "https://edition.cnn.com/politics"
+}

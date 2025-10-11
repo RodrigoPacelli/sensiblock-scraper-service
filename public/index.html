@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apify Actor Cloud Service - Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      color: #667eea;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      background: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .tab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .tab.active {
+      background: #667eea;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .card h2 {
+      color: #667eea;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      font-family: monospace;
+    }
+
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    button:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .results {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .results pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status-healthy {
+      background: #10b981;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+
+    .status-error {
+      background: #ef4444;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+    }
+
+    .status-warning {
+      background: #f59e0b;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+    }
+
+    .alert {
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .alert-success {
+      background: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid #10b981;
+    }
+
+    .alert-error {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid #ef4444;
+    }
+
+    .alert-info {
+      background: #dbeafe;
+      color: #1e40af;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      background: #6b7280;
+    }
+
+    .btn-secondary:hover {
+      background: #4b5563;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .article-list {
+      display: grid;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .article-item {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+
+    .article-title {
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 5px;
+    }
+
+    .article-meta {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .auto-refresh {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f3f4f6;
+      border-radius: 8px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #667eea;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚀 Apify Actor Cloud Service</h1>
+      <p class="subtitle">Dashboard de Monitoramento e Controle - VPS Production</p>
+      <p class="subtitle" style="margin-top: 5px; font-size: 0.9rem;">
+        <span class="status-indicator" id="connectionStatus"></span>
+        <span id="connectionText">Verificando conexão...</span>
+      </p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="home">🏠 Home</button>
+      <button class="tab" data-tab="health">❤️ Health</button>
+      <button class="tab" data-tab="metrics">📊 Métricas</button>
+      <button class="tab" data-tab="queue">📋 Fila</button>
+      <button class="tab" data-tab="scrape">🔍 Scrape</button>
+      <button class="tab" data-tab="batch">📦 Batch</button>
+    </div>
+
+    <!-- HOME TAB -->
+    <div class="tab-content active" id="home">
+      <div class="card">
+        <h2>📊 Visão Geral do Sistema</h2>
+        <div class="auto-refresh">
+          <label class="switch">
+            <input type="checkbox" id="autoRefreshToggle" checked>
+            <span class="slider"></span>
+          </label>
+          <span>Auto-atualização (30s)</span>
+        </div>
+        <div class="stats-grid" id="homeStats"></div>
+      </div>
+
+      <div class="card">
+        <h2>🎯 Quick Actions</h2>
+        <div class="btn-group">
+          <button onclick="testConnection()">🔌 Testar Conexão</button>
+          <button onclick="refreshAllData()">🔄 Atualizar Dados</button>
+          <button onclick="clearQueue()">🗑️ Limpar Fila</button>
+          <button onclick="showTab('scrape')">🔍 Novo Scrape</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEALTH TAB -->
+    <div class="tab-content" id="health">
+      <div class="card">
+        <h2>❤️ Health Check</h2>
+        <button onclick="fetchHealth()">🔄 Atualizar Health</button>
+        <div class="results" id="healthResults"></div>
+      </div>
+    </div>
+
+    <!-- METRICS TAB -->
+    <div class="tab-content" id="metrics">
+      <div class="card">
+        <h2>📊 Métricas do Sistema</h2>
+        <button onclick="fetchMetrics()">🔄 Atualizar Métricas</button>
+        <div class="results" id="metricsResults"></div>
+      </div>
+    </div>
+
+    <!-- QUEUE TAB -->
+    <div class="tab-content" id="queue">
+      <div class="card">
+        <h2>📋 Status da Fila</h2>
+        <div class="btn-group">
+          <button onclick="fetchQueue()">🔄 Atualizar Fila</button>
+          <button class="btn-danger" onclick="clearQueue()">🗑️ Limpar Fila</button>
+        </div>
+        <div class="results" id="queueResults"></div>
+      </div>
+    </div>
+
+    <!-- SCRAPE TAB -->
+    <div class="tab-content" id="scrape">
+      <div class="card">
+        <h2>🔍 Single Scrape</h2>
+        <form onsubmit="executeScrape(event)">
+          <div class="form-group">
+            <label>Sites (um por linha ou separado por vírgula):</label>
+            <textarea id="scrapeSites" placeholder="edition.cnn.com&#10;bbc.com&#10;nytimes.com">edition.cnn.com</textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Max Articles per Site:</label>
+            <input type="number" id="scrapeMaxArticles" value="50" min="1" max="500">
+          </div>
+
+          <div class="form-group">
+            <label>Timeout (ms):</label>
+            <input type="number" id="scrapeTimeout" value="30000" min="5000" max="300000">
+          </div>
+
+          <button type="submit" id="scrapeBtn">🚀 Executar Scrape</button>
+        </form>
+        <div class="results" id="scrapeResults"></div>
+      </div>
+    </div>
+
+    <!-- BATCH TAB -->
+    <div class="tab-content" id="batch">
+      <div class="card">
+        <h2>📦 Batch Scrape</h2>
+        <form onsubmit="executeBatchScrape(event)">
+          <div class="form-group">
+            <label>URLs (uma por linha):</label>
+            <textarea id="batchUrls" placeholder="https://edition.cnn.com&#10;https://bbc.com&#10;https://nytimes.com">https://edition.cnn.com
+https://bbc.com
+https://nytimes.com</textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Max Articles per URL:</label>
+            <input type="number" id="batchMaxArticles" value="50" min="1" max="500">
+          </div>
+
+          <div class="form-group">
+            <label>Timeout (ms):</label>
+            <input type="number" id="batchTimeout" value="30000" min="5000" max="300000">
+          </div>
+
+          <button type="submit" id="batchBtn">🚀 Executar Batch</button>
+        </form>
+        <div class="results" id="batchResults"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://31.97.131.161:3005';
+    let autoRefreshInterval = null;
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabName = tab.dataset.tab;
+        showTab(tabName);
+      });
+    });
+
+    function showTab(tabName) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+      document.getElementById(tabName).classList.add('active');
+
+      // Load data when tab is shown
+      if (tabName === 'health') fetchHealth();
+      if (tabName === 'metrics') fetchMetrics();
+      if (tabName === 'queue') fetchQueue();
+      if (tabName === 'home') loadHomeData();
+    }
+
+    // Auto-refresh toggle
+    document.getElementById('autoRefreshToggle').addEventListener('change', (e) => {
+      if (e.target.checked) {
+        startAutoRefresh();
+      } else {
+        stopAutoRefresh();
+      }
+    });
+
+    function startAutoRefresh() {
+      stopAutoRefresh();
+      autoRefreshInterval = setInterval(() => {
+        if (document.querySelector('.tab-content.active').id === 'home') {
+          loadHomeData();
+        }
+      }, 30000);
+    }
+
+    function stopAutoRefresh() {
+      if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+      }
+    }
+
+    // Test connection
+    async function testConnection() {
+      const statusEl = document.getElementById('connectionStatus');
+      const textEl = document.getElementById('connectionText');
+
+      statusEl.className = 'status-indicator status-warning';
+      textEl.textContent = 'Testando conexão...';
+
+      try {
+        const response = await fetch(`${API_BASE}/health`);
+        if (response.ok) {
+          statusEl.className = 'status-indicator status-healthy';
+          textEl.textContent = 'Conectado ao VPS Production';
+          showAlert('success', '✅ Conexão com VPS estabelecida com sucesso!');
+        } else {
+          throw new Error('Resposta não-OK');
+        }
+      } catch (error) {
+        statusEl.className = 'status-indicator status-error';
+        textEl.textContent = 'Erro de conexão';
+        showAlert('error', `❌ Erro ao conectar: ${error.message}`);
+      }
+    }
+
+    // Fetch Health
+    async function fetchHealth() {
+      const resultsEl = document.getElementById('healthResults');
+      resultsEl.innerHTML = '<div class="loading"></div> Carregando...';
+
+      try {
+        const response = await fetch(`${API_BASE}/health`);
+        const data = await response.json();
+        resultsEl.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } catch (error) {
+        resultsEl.innerHTML = `<div class="alert alert-error">❌ Erro: ${error.message}</div>`;
+      }
+    }
+
+    // Fetch Metrics
+    async function fetchMetrics() {
+      const resultsEl = document.getElementById('metricsResults');
+      resultsEl.innerHTML = '<div class="loading"></div> Carregando...';
+
+      try {
+        const response = await fetch(`${API_BASE}/metrics`);
+        const data = await response.json();
+        resultsEl.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } catch (error) {
+        resultsEl.innerHTML = `<div class="alert alert-error">❌ Erro: ${error.message}</div>`;
+      }
+    }
+
+    // Fetch Queue
+    async function fetchQueue() {
+      const resultsEl = document.getElementById('queueResults');
+      resultsEl.innerHTML = '<div class="loading"></div> Carregando...';
+
+      try {
+        const response = await fetch(`${API_BASE}/queue`);
+        const data = await response.json();
+        resultsEl.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } catch (error) {
+        resultsEl.innerHTML = `<div class="alert alert-error">❌ Erro: ${error.message}</div>`;
+      }
+    }
+
+    // Clear Queue
+    async function clearQueue() {
+      if (!confirm('Tem certeza que deseja limpar a fila?')) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/queue/clear`, { method: 'POST' });
+        const data = await response.json();
+        showAlert('success', `✅ ${data.message}`);
+        fetchQueue();
+      } catch (error) {
+        showAlert('error', `❌ Erro: ${error.message}`);
+      }
+    }
+
+    // Execute Scrape
+    async function executeScrape(event) {
+      event.preventDefault();
+
+      const btn = document.getElementById('scrapeBtn');
+      const resultsEl = document.getElementById('scrapeResults');
+
+      btn.disabled = true;
+      btn.innerHTML = '<div class="loading"></div> Executando...';
+      resultsEl.innerHTML = '<div class="loading"></div> Processando scrape...';
+
+      const sitesText = document.getElementById('scrapeSites').value;
+      const sites = sitesText.split(/[\n,]/).map(s => s.trim()).filter(s => s);
+
+      const payload = {
+        sites,
+        maxArticlesPerSite: parseInt(document.getElementById('scrapeMaxArticles').value),
+        timeout: parseInt(document.getElementById('scrapeTimeout').value)
+      };
+
+      try {
+        const response = await fetch(`${API_BASE}/scrape`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          resultsEl.innerHTML = `
+            <div class="alert alert-success">✅ Scrape concluído com sucesso!</div>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+
+          if (data.articles && data.articles.length > 0) {
+            displayArticles(data.articles, resultsEl);
+          }
+        } else {
+          resultsEl.innerHTML = `<div class="alert alert-error">❌ Erro: ${data.error || 'Erro desconhecido'}</div>`;
+        }
+      } catch (error) {
+        resultsEl.innerHTML = `<div class="alert alert-error">❌ Erro: ${error.message}</div>`;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '🚀 Executar Scrape';
+      }
+    }
+
+    // Execute Batch Scrape
+    async function executeBatchScrape(event) {
+      event.preventDefault();
+
+      const btn = document.getElementById('batchBtn');
+      const resultsEl = document.getElementById('batchResults');
+
+      btn.disabled = true;
+      btn.innerHTML = '<div class="loading"></div> Executando...';
+      resultsEl.innerHTML = '<div class="loading"></div> Processando batch scrape...';
+
+      const urlsText = document.getElementById('batchUrls').value;
+      const urls = urlsText.split('\n').map(s => s.trim()).filter(s => s);
+
+      const payload = {
+        urls,
+        maxArticlesPerUrl: parseInt(document.getElementById('batchMaxArticles').value),
+        timeout: parseInt(document.getElementById('batchTimeout').value)
+      };
+
+      try {
+        const response = await fetch(`${API_BASE}/scrape-batch`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          resultsEl.innerHTML = `
+            <div class="alert alert-success">
+              ✅ Batch concluído!<br>
+              Total URLs: ${data.totalUrls}<br>
+              Sucessos: ${data.successfulUrls}<br>
+              Falhas: ${data.failedUrls}<br>
+              Total Artigos: ${data.totalArticles}
+            </div>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        } else {
+          resultsEl.innerHTML = `<div class="alert alert-error">❌ Erro: ${data.error || 'Erro desconhecido'}</div>`;
+        }
+      } catch (error) {
+        resultsEl.innerHTML = `<div class="alert alert-error">❌ Erro: ${error.message}</div>`;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '🚀 Executar Batch';
+      }
+    }
+
+    // Display articles
+    function displayArticles(articles, container) {
+      const articlesHtml = articles.slice(0, 10).map(article => `
+        <div class="article-item">
+          <div class="article-title">${article.title || 'Sem título'}</div>
+          <div class="article-meta">
+            ${article.source || 'Fonte desconhecida'} •
+            ${article.date || 'Data não disponível'}
+          </div>
+        </div>
+      `).join('');
+
+      container.innerHTML += `
+        <div class="article-list">
+          <h3>📰 Artigos Encontrados (primeiros 10):</h3>
+          ${articlesHtml}
+        </div>
+      `;
+    }
+
+    // Load home data
+    async function loadHomeData() {
+      const statsEl = document.getElementById('homeStats');
+      statsEl.innerHTML = '<div class="loading"></div> Carregando...';
+
+      try {
+        const [healthRes, metricsRes, queueRes] = await Promise.all([
+          fetch(`${API_BASE}/health`),
+          fetch(`${API_BASE}/metrics`),
+          fetch(`${API_BASE}/queue`)
+        ]);
+
+        const health = await healthRes.json();
+        const metrics = await metricsRes.json();
+        const queue = await queueRes.json();
+
+        statsEl.innerHTML = `
+          <div class="stat-card">
+            <div class="stat-label">Status do Serviço</div>
+            <div class="stat-value">${health.status === 'healthy' ? '✅ Online' : '❌ Offline'}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Uptime</div>
+            <div class="stat-value">${formatUptime(health.uptime)}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Runs</div>
+            <div class="stat-value">${metrics.totalRuns}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Success Rate</div>
+            <div class="stat-value">${metrics.successRate}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Fila Ativa</div>
+            <div class="stat-value">${queue.active}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Fila Pendente</div>
+            <div class="stat-value">${queue.queued}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Memória Heap</div>
+            <div class="stat-value">${health.memory?.heapUsed || 'N/A'}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Memória Total</div>
+            <div class="stat-value">${health.system?.freeMem || 'N/A'} livre</div>
+          </div>
+        `;
+      } catch (error) {
+        statsEl.innerHTML = `<div class="alert alert-error">❌ Erro ao carregar dados: ${error.message}</div>`;
+      }
+    }
+
+    // Refresh all data
+    function refreshAllData() {
+      testConnection();
+      loadHomeData();
+    }
+
+    // Show alert
+    function showAlert(type, message) {
+      const alertClass = type === 'success' ? 'alert-success' : type === 'error' ? 'alert-error' : 'alert-info';
+      const alert = document.createElement('div');
+      alert.className = `alert ${alertClass}`;
+      alert.textContent = message;
+      alert.style.position = 'fixed';
+      alert.style.top = '20px';
+      alert.style.right = '20px';
+      alert.style.zIndex = '9999';
+      alert.style.minWidth = '300px';
+      document.body.appendChild(alert);
+
+      setTimeout(() => alert.remove(), 5000);
+    }
+
+    // Format uptime
+    function formatUptime(seconds) {
+      const days = Math.floor(seconds / 86400);
+      const hours = Math.floor((seconds % 86400) / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+
+      if (days > 0) return `${days}d ${hours}h`;
+      if (hours > 0) return `${hours}h ${minutes}m`;
+      return `${minutes}m`;
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      testConnection();
+      loadHomeData();
+      startAutoRefresh();
+    });
+  </script>
+</body>
+</html>

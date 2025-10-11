@@ -1,0 +1,9 @@
+{
+	"id": "iTBM1urLXbxcLgr",
+	"json": "{\"id\":\"iTBM1urLXbxcLgr\",\"url\":\"https://edition.cnn.com/world\",\"loadedUrl\":\"https://edition.cnn.com/world\",\"uniqueKey\":\"https://edition.cnn.com/world\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"site\":\"edition.cnn.com\",\"source\":\"CNN\",\"section\":\"world\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-10-09T21:54:17.839Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://edition.cnn.com/world",
+	"url": "https://edition.cnn.com/world"
+}
