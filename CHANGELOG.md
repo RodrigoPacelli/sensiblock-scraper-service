@@ -1,5 +1,14 @@
 # Changelog - Sensiblock Scraper Service
 
+## [1.1.1] - 2025-10-13
+
+### 🔧 Fixed
+- **GitHub Actions CI/CD**: Corrigido path do diretório VPS para `/var/www/sensiblock-scraper-service`
+- **Deployment**: Migrado de monorepo para repositório standalone
+- **PM2**: Reconfigurado para usar novo código standalone
+
+---
+
 ## [1.1.0] - 2025-10-13
 
 ### ✨ Added
