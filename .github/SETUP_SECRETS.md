@@ -101,7 +101,7 @@ Cada deploy mostrará:
 
 O serviço está localizado em:
 ```
-/var/www/apify-actor-service/
+/var/www/sensiblock-scraper-service/
 ```
 
 Gerenciado por PM2 com o nome: `apify-actor-cloud`
