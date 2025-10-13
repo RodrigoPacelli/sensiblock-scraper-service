@@ -72,7 +72,7 @@ jobs:
 
             # Reload PM2 process
             echo "🔄 Reloading PM2 process..."
-            pm2 reload ecosystem.config.cjs --env production || pm2 start ecosystem.config.cjs --env production
+            pm2 reload ecosystem.config.cjs || pm2 start ecosystem.config.cjs
 
             # Save PM2 config
             pm2 save
