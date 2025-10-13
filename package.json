@@ -1,6 +1,6 @@
 {
   "name": "apify-actor-cloud-service",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Cloud execution service for Apify Actor scraper (Hostinger VPS)",
   "type": "module",
   "main": "server.js",
