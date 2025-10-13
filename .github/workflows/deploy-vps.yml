@@ -53,6 +53,9 @@ jobs:
           port: ${{ secrets.VPS_PORT || 22 }}
           script_stop: true
           script: |
+            set -e
+            set -x
+
             echo "🔄 Starting deployment..."
 
             # Navigate to app directory
@@ -95,18 +98,18 @@ jobs:
             fi
 
       # 6. Get service metrics
-      - name: 📊 Get service metrics
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT || 22 }}
-          script: |
-            echo "📊 Service Metrics:"
-            curl -s http://localhost:3005/metrics
-            echo ""
-            curl -s http://localhost:3005/system-metrics | head -20
+      # - name: 📊 Get service metrics
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.VPS_HOST }}
+      #     username: ${{ secrets.VPS_USERNAME }}
+      #     key: ${{ secrets.VPS_SSH_KEY }}
+      #     port: ${{ secrets.VPS_PORT || 22 }}
+      #     script: |
+      #       echo "📊 Service Metrics:"
+      #       curl -s http://localhost:3005/metrics
+      #       echo ""
+      #       curl -s http://localhost:3005/system-metrics | head -20
 
       # 7. Notify on failure
       - name: ❌ Notify on failure
