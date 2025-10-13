@@ -67,29 +67,39 @@ app.get('/health', (req, res) => {
 /**
  * Scrape endpoint
  * POST /scrape
- * Body: { sites: string[], maxArticlesPerSite: number, timeout: number }
+ * Body: { sites: string[], maxArticlesPerSite: number, timeout: number, delay: number }
  */
 app.post('/scrape', async (req, res) => {
   const startTime = Date.now();
   const {
     sites = ['edition.cnn.com'],
-    maxArticlesPerSite = 50,
+    maxArticlesPerSite = 9999, // Sem limite prático
     timeout = 30000,
     dateFilter = 'today',
     includeImages = true,
     removeDuplicates = true,
-    debug = false
+    debug = false,
+    delay = 0 // Delay entre requisições (ms)
   } = req.body;
 
   console.log('\n' + '='.repeat(80));
   console.log(`[Server] 🚀 New scrape request received`);
   console.log(`[Server] 📰 Sites: ${sites.join(', ')}`);
   console.log(`[Server] 📊 Max articles per site: ${maxArticlesPerSite}`);
+  if (delay > 0) {
+    console.log(`[Server] ⏱️  Delay: ${delay}ms`);
+  }
   console.log('='.repeat(80) + '\n');
 
   totalRuns++;
 
   try {
+    // Aplicar delay se especificado
+    if (delay > 0) {
+      console.log(`[Server] ⏳ Waiting ${delay}ms before scraping...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+
     // Adiciona à fila
     const result = await queue.add(async () => {
       return await runActorScript({
@@ -139,18 +149,19 @@ app.post('/scrape', async (req, res) => {
 /**
  * Scrape batch endpoint - Scrapes multiple URLs in sequence
  * POST /scrape-batch
- * Body: { urls: string[], maxArticlesPerUrl: number }
+ * Body: { urls: string[], maxArticlesPerUrl: number, interval: number }
  */
 app.post('/scrape-batch', async (req, res) => {
   const startTime = Date.now();
   const {
     urls = [],
-    maxArticlesPerUrl = 50,
+    maxArticlesPerUrl = 9999, // Sem limite prático
     timeout = 30000,
     dateFilter = 'today',
     includeImages = true,
     removeDuplicates = true,
-    debug = false
+    debug = false,
+    interval = 1000 // Intervalo entre URLs (ms)
   } = req.body;
 
   if (!urls || urls.length === 0) {
@@ -165,6 +176,9 @@ app.post('/scrape-batch', async (req, res) => {
   console.log(`[Server] 🚀 New batch scrape request received`);
   console.log(`[Server] 📰 URLs: ${urls.length}`);
   console.log(`[Server] 📊 Max articles per URL: ${maxArticlesPerUrl}`);
+  if (interval > 0) {
+    console.log(`[Server] ⏱️  Interval between URLs: ${interval}ms`);
+  }
   console.log('='.repeat(80) + '\n');
 
   totalRuns++;
@@ -174,11 +188,12 @@ app.post('/scrape-batch', async (req, res) => {
     let totalArticles = 0;
 
     // Processa cada URL sequencialmente
-    for (const url of urls) {
+    for (let i = 0; i < urls.length; i++) {
+      const url = urls[i];
       const urlStartTime = Date.now();
 
       try {
-        console.log(`[Server] 📡 Processing: ${url}`);
+        console.log(`[Server] 📡 Processing [${i + 1}/${urls.length}]: ${url}`);
 
         const result = await queue.add(async () => {
           return await runActorScript({
@@ -205,6 +220,12 @@ app.post('/scrape-batch', async (req, res) => {
         totalArticles += result.totalResults || 0;
 
         console.log(`[Server] ✅ ${url}: ${result.totalResults} articles (${(urlDuration / 1000).toFixed(2)}s)`);
+
+        // Aplicar intervalo entre URLs (exceto após a última)
+        if (interval > 0 && i < urls.length - 1) {
+          console.log(`[Server] ⏳ Waiting ${interval}ms before next URL...`);
+          await new Promise(resolve => setTimeout(resolve, interval));
+        }
 
       } catch (error) {
         const urlDuration = Date.now() - urlStartTime;
@@ -289,6 +310,72 @@ app.get('/metrics', (req, res) => {
     queue: queue.status()
   });
 });
+
+/**
+ * System metrics endpoint (CPU, RAM, etc)
+ */
+app.get('/system-metrics', (req, res) => {
+  const usage = process.cpuUsage();
+  const mem = process.memoryUsage();
+  const uptime = process.uptime();
+
+  res.json({
+    timestamp: new Date().toISOString(),
+    process: {
+      pid: process.pid,
+      uptime: Math.floor(uptime),
+      uptimeFormatted: formatUptime(uptime)
+    },
+    cpu: {
+      user: (usage.user / 1000000).toFixed(2),
+      system: (usage.system / 1000000).toFixed(2),
+      total: ((usage.user + usage.system) / 1000000).toFixed(2)
+    },
+    memory: {
+      rss: Math.round(mem.rss / 1024 / 1024),
+      heapTotal: Math.round(mem.heapTotal / 1024 / 1024),
+      heapUsed: Math.round(mem.heapUsed / 1024 / 1024),
+      heapUsedPercent: ((mem.heapUsed / mem.heapTotal) * 100).toFixed(2),
+      external: Math.round(mem.external / 1024 / 1024),
+      arrayBuffers: Math.round(mem.arrayBuffers / 1024 / 1024)
+    },
+    system: {
+      freeMem: Math.round(os.freemem() / 1024 / 1024),
+      totalMem: Math.round(os.totalmem() / 1024 / 1024),
+      usedMem: Math.round((os.totalmem() - os.freemem()) / 1024 / 1024),
+      memUsagePercent: (((os.totalmem() - os.freemem()) / os.totalmem()) * 100).toFixed(2),
+      loadAvg: os.loadavg().map(v => v.toFixed(2)),
+      platform: os.platform(),
+      cpus: os.cpus().length,
+      arch: os.arch()
+    },
+    scraper: {
+      totalRuns,
+      successfulRuns,
+      failedRuns,
+      successRate: totalRuns > 0 ? (successfulRuns / totalRuns * 100).toFixed(2) + '%' : '0%',
+      queue: queue.status()
+    }
+  });
+});
+
+/**
+ * Helper: Format uptime to human readable
+ */
+function formatUptime(seconds) {
+  const days = Math.floor(seconds / 86400);
+  const hours = Math.floor((seconds % 86400) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+
+  const parts = [];
+  if (days > 0) parts.push(`${days}d`);
+  if (hours > 0) parts.push(`${hours}h`);
+  if (minutes > 0) parts.push(`${minutes}m`);
+  if (secs > 0 || parts.length === 0) parts.push(`${secs}s`);
+
+  return parts.join(' ');
+}
 
 /**
  * Executa o script do actor como child process
