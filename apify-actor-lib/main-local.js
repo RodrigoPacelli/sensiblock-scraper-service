@@ -1,6 +1,8 @@
 /**
  * Local version of main.js with mock Actor
  * This file imports from mock instead of real apify package
+ *
+ * FIXED: Now supports any URL, not just CNN
  */
 
 import { MockActor as Actor } from '../mock-apify-actor.js';
@@ -23,80 +25,115 @@ const {
     debug = false
 } = input;
 
-console.log('🚀 Starting Optimized News Scraper Actor');
+console.log('🚀 Starting Optimized News Scraper Actor (UNIVERSAL MODE)');
 console.log(`📰 Target sites: ${sites.join(', ')}`);
 console.log(`📊 Max articles per site: ${maxArticlesPerSite}`);
 
 const allArticles = [];
-const siteConfig = {
-    'edition.cnn.com': {
-        name: 'CNN',
-        sections: [
-            { url: 'https://edition.cnn.com/world', name: 'world' },
-            { url: 'https://edition.cnn.com', name: 'edition.cnn.com' },
-            { url: 'https://edition.cnn.com/politics', name: 'politics' },
-            { url: 'https://edition.cnn.com/business', name: 'business' },
-            { url: 'https://edition.cnn.com/health', name: 'health' },
-            { url: 'https://edition.cnn.com/entertainment', name: 'entertainment' },
-            { url: 'https://edition.cnn.com/tech', name: 'tech' },
-            { url: 'https://edition.cnn.com/style', name: 'style' },
-            { url: 'https://edition.cnn.com/travel', name: 'travel' },
-            { url: 'https://edition.cnn.com/sport', name: 'sports' },
-            { url: 'https://edition.cnn.com/videos', name: 'videos' },
-        ]
-    }
-};
 
-// Build start URLs
+// Build start URLs - UNIVERSAL: accept any URL
 const startUrls = [];
-for (const site of sites) {
-    if (siteConfig[site]) {
-        for (const section of siteConfig[site].sections) {
-            startUrls.push({
-                url: section.url,
-                userData: {
-                    site,
-                    source: siteConfig[site].name,
-                    section: section.name
-                }
-            });
+for (const siteOrUrl of sites) {
+    try {
+        // Check if it's a full URL or just a domain
+        let url, domain, source;
+
+        if (siteOrUrl.startsWith('http://') || siteOrUrl.startsWith('https://')) {
+            // Full URL
+            url = siteOrUrl;
+            const urlObj = new URL(url);
+            domain = urlObj.hostname.replace('www.', '');
+            source = domain.split('.')[0].toUpperCase(); // ex: 'reuters' -> 'REUTERS'
+        } else {
+            // Just domain
+            url = `https://${siteOrUrl}`;
+            domain = siteOrUrl.replace('www.', '');
+            source = domain.split('.')[0].toUpperCase();
         }
+
+        startUrls.push({
+            url,
+            userData: {
+                site: domain,
+                source,
+                section: domain
+            }
+        });
+
+        console.log(`📍 Added: ${url} (source: ${source})`);
+    } catch (error) {
+        console.error(`❌ Invalid URL: ${siteOrUrl}`, error.message);
     }
 }
 
+if (startUrls.length === 0) {
+    console.error('❌ No valid URLs to scrape!');
+    await Actor.exit();
+}
+
+console.log(`📋 Total URLs to scrape: ${startUrls.length}`);
+
 // Playwright crawler
 const crawler = new PlaywrightCrawler({
-    maxRequestsPerCrawl: startUrls.length,
+    maxRequestsPerCrawl: startUrls.length * 5, // Allow multiple pages per site
     maxConcurrency: 2,
     async requestHandler({ page, request }) {
         const { site, source, section } = request.userData;
 
-        // Extract articles (no limit) - pass section as parameter
-        const articles = await page.$$eval('article, .card, [class*="article"]', (elements, sectionName) => {
-            return elements.map(el => {
-                const titleEl = el.querySelector('h2, h3, h4, [class*="headline"]');
-                const linkEl = el.querySelector('a[href*="/"]');
-                const descEl = el.querySelector('p, [class*="description"]');
-                const imgEl = el.querySelector('img');
+        console.log(`🔍 Scraping: ${request.url}`);
 
-                if (!titleEl || !linkEl) return null;
+        // Wait for page to load
+        await page.waitForLoadState('domcontentloaded', { timeout: 10000 }).catch(() => {
+            console.log(`⚠️  Timeout waiting for ${request.url}`);
+        });
 
-                return {
-                    title: titleEl.textContent?.trim(),
-                    url: linkEl.href,
-                    description: descEl?.textContent?.trim() || '',
-                    imageUrl: imgEl?.src || '',
-                    section: sectionName
-                };
-            }).filter(Boolean);
-        }, section);
+        // Extract articles using generic selectors that work on most news sites
+        const articles = await page.$$eval(
+            'article, .card, [class*="article"], [class*="story"], [class*="item"], [data-testid*="article"], [data-component*="article"]',
+            (elements, sectionName) => {
+                return elements.map(el => {
+                    // Try multiple selectors for title
+                    const titleEl = el.querySelector('h1, h2, h3, h4, [class*="headline"], [class*="title"], a[href*="/"]');
 
-        allArticles.push(...articles.map(article => ({
+                    // Try multiple selectors for link
+                    const linkEl = el.querySelector('a[href*="/"]') || titleEl?.closest('a');
+
+                    // Try multiple selectors for description
+                    const descEl = el.querySelector('p, [class*="description"], [class*="summary"], [class*="excerpt"]');
+
+                    // Try multiple selectors for image
+                    const imgEl = el.querySelector('img, picture img');
+
+                    if (!titleEl || !linkEl) return null;
+
+                    const href = linkEl.href;
+                    // Filter out non-article links
+                    if (!href || href.includes('#') || href.includes('javascript:') ||
+                        href.includes('mailto:') || href.includes('tel:')) {
+                        return null;
+                    }
+
+                    return {
+                        title: titleEl.textContent?.trim(),
+                        url: href,
+                        description: descEl?.textContent?.trim() || '',
+                        imageUrl: imgEl?.src || imgEl?.getAttribute('data-src') || '',
+                        section: sectionName
+                    };
+                }).filter(Boolean);
+            },
+            section
+        );
+
+        // Add source to each article
+        const articlesWithSource = articles.map(article => ({
             ...article,
             source,
             publishedAt: new Date().toISOString(),
             scrapedAt: new Date().toISOString()
-        })));
+        }));
+
+        allArticles.push(...articlesWithSource);
 
         console.log(`✅ Extracted ${articles.length} articles from ${source} - ${section}`);
     },
@@ -106,6 +143,7 @@ const crawler = new PlaywrightCrawler({
 });
 
 // Run crawler
+console.log('🚀 Starting crawler...');
 await crawler.run(startUrls);
 
 // Remove duplicates
