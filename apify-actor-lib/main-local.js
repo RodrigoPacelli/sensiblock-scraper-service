@@ -94,14 +94,21 @@ console.log(`📋 Total URLs to scrape: ${startUrls.length}`);
 const crawler = new PlaywrightCrawler({
     maxRequestsPerCrawl: startUrls.length * 5, // Allow multiple pages per site
     maxConcurrency: 2,
-    launchOptions: {
-        executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
-        headless: true,
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-gpu'
+    browserPoolOptions: {
+        useFingerprints: false,
+        preLaunchHooks: [
+            async (pageId, launchContext) => {
+                launchContext.launchOptions = {
+                    executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
+                    headless: true,
+                    args: [
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox',
+                        '--disable-dev-shm-usage',
+                        '--disable-gpu'
+                    ]
+                };
+            }
         ]
     },
     async requestHandler({ page, request }) {
