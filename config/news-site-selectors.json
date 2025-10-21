@@ -1,0 +1,431 @@
+{
+  "extractionDate": "2025-10-18T03:27:15.497Z",
+  "summary": {
+    "totalSites": 17,
+    "successfulExtractions": 14,
+    "failedExtractions": 3,
+    "sites": [
+      {
+        "site": "abcnews.go.com",
+        "status": "SUCCESS",
+        "confidence": 0.75,
+        "samplesAnalyzed": 3
+      },
+      {
+        "site": "apnews.com",
+        "status": "SUCCESS",
+        "confidence": 0.85,
+        "samplesAnalyzed": 19
+      },
+      {
+        "site": "bloomberg.com",
+        "status": "FAILED",
+        "confidence": 0,
+        "samplesAnalyzed": 0
+      },
+      {
+        "site": "cbsnews.com",
+        "status": "SUCCESS",
+        "confidence": 0.85,
+        "samplesAnalyzed": 20
+      },
+      {
+        "site": "dailymail.co.uk",
+        "status": "SUCCESS",
+        "confidence": 0.75,
+        "samplesAnalyzed": 5
+      },
+      {
+        "site": "foxnews.com",
+        "status": "SUCCESS",
+        "confidence": 0.85,
+        "samplesAnalyzed": 19
+      },
+      {
+        "site": "ft.com",
+        "status": "SUCCESS",
+        "confidence": 0.85,
+        "samplesAnalyzed": 15
+      },
+      {
+        "site": "theguardian.com",
+        "status": "SUCCESS",
+        "confidence": 0.75,
+        "samplesAnalyzed": 7
+      },
+      {
+        "site": "huffpost.com",
+        "status": "SUCCESS",
+        "confidence": 0.85,
+        "samplesAnalyzed": 9
+      },
+      {
+        "site": "independent.co.uk",
+        "status": "SUCCESS",
+        "confidence": 0.85,
+        "samplesAnalyzed": 9
+      },
+      {
+        "site": "nbcnews.com",
+        "status": "SUCCESS",
+        "confidence": 0.85,
+        "samplesAnalyzed": 10
+      },
+      {
+        "site": "nytimes.com",
+        "status": "SUCCESS",
+        "confidence": 0.65,
+        "samplesAnalyzed": 0
+      },
+      {
+        "site": "reuters.com",
+        "status": "SUCCESS",
+        "confidence": 0.85,
+        "samplesAnalyzed": 12
+      },
+      {
+        "site": "telegraph.co.uk",
+        "status": "SUCCESS",
+        "confidence": 0.75,
+        "samplesAnalyzed": 20
+      },
+      {
+        "site": "usatoday.com",
+        "status": "SUCCESS",
+        "confidence": 0.85,
+        "samplesAnalyzed": 15
+      },
+      {
+        "site": "washingtonpost.com",
+        "status": "SUCCESS",
+        "confidence": 0.85,
+        "samplesAnalyzed": 16
+      },
+      {
+        "site": "wsj.com",
+        "status": "SUCCESS",
+        "confidence": 0.65,
+        "samplesAnalyzed": 0
+      }
+    ]
+  },
+  "selectors": {
+    "abcnews.go.com": {
+      "site": "abcnews.go.com",
+      "extractedAt": "2025-10-18T03:13:20.836Z",
+      "status": "SUCCESS",
+      "confidence": 0.75,
+      "selectors": {
+        "articleContainer": ".Carousel__Inner, article",
+        "title": ".video-label, h2, h3",
+        "link": ".AnchorLink, a",
+        "description": ".p, p",
+        "image": ".img, img"
+      },
+      "validation": {
+        "articlesFound": 37,
+        "samplesAnalyzed": 3,
+        "titlesExtracted": 3,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 0
+      }
+    },
+    "apnews.com": {
+      "site": "apnews.com",
+      "extractedAt": "2025-10-18T03:05:40.908Z",
+      "status": "SUCCESS",
+      "confidence": 0.85,
+      "selectors": {
+        "articleContainer": ".PagePromo, article, [data-key]",
+        "title": ".PagePromo-title, h2, h3",
+        "link": ".Link, a[href*=\"/\"]",
+        "description": ".p, p",
+        "image": ".Image, img"
+      },
+      "validation": {
+        "articlesFound": 340,
+        "samplesAnalyzed": 19,
+        "titlesExtracted": 19,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 12
+      }
+    },
+    "bloomberg.com": {
+      "site": "bloomberg.com",
+      "extractedAt": "2025-10-18T03:24:45.599Z",
+      "status": "FAILED",
+      "error": "page.goto: net::ERR_ABORTED at https://www.bloomberg.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.bloomberg.com/\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    "cbsnews.com": {
+      "site": "cbsnews.com",
+      "extractedAt": "2025-10-18T03:13:59.594Z",
+      "status": "SUCCESS",
+      "confidence": 0.85,
+      "selectors": {
+        "articleContainer": ".item\n, article",
+        "title": ".item__title-wrapper, h2",
+        "link": ".item__anchor, a",
+        "description": ".item__dek, p",
+        "image": ".ls-is-cached, img"
+      },
+      "validation": {
+        "articlesFound": 1341,
+        "samplesAnalyzed": 20,
+        "titlesExtracted": 20,
+        "descriptionsExtracted": 20,
+        "imagesExtracted": 19
+      }
+    },
+    "dailymail.co.uk": {
+      "site": "dailymail.co.uk",
+      "extractedAt": "2025-10-18T03:16:47.660Z",
+      "status": "SUCCESS",
+      "confidence": 0.75,
+      "selectors": {
+        "articleContainer": ".article, article",
+        "title": ".linkro-darkred, h2",
+        "link": ".a, a",
+        "description": ".p, p",
+        "image": ".img, img"
+      },
+      "validation": {
+        "articlesFound": 603,
+        "samplesAnalyzed": 5,
+        "titlesExtracted": 5,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 5
+      }
+    },
+    "foxnews.com": {
+      "site": "foxnews.com",
+      "extractedAt": "2025-10-18T03:11:25.672Z",
+      "status": "SUCCESS",
+      "confidence": 0.85,
+      "selectors": {
+        "articleContainer": ".article, article",
+        "title": ".title, h2, h3",
+        "link": ".a, a[href*=\"/\"]",
+        "description": ".p, p",
+        "image": ".img, img"
+      },
+      "validation": {
+        "articlesFound": 295,
+        "samplesAnalyzed": 19,
+        "titlesExtracted": 19,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 18
+      }
+    },
+    "ft.com": {
+      "site": "ft.com",
+      "extractedAt": "2025-10-18T03:24:34.910Z",
+      "status": "SUCCESS",
+      "confidence": 0.85,
+      "selectors": {
+        "articleContainer": ".story-group__article, article",
+        "title": ".headline, h2",
+        "link": ".link, a",
+        "description": ".standfirst, p",
+        "image": ".image, img"
+      },
+      "validation": {
+        "articlesFound": 428,
+        "samplesAnalyzed": 15,
+        "titlesExtracted": 15,
+        "descriptionsExtracted": 6,
+        "imagesExtracted": 10
+      }
+    },
+    "theguardian.com": {
+      "site": "theguardian.com",
+      "extractedAt": "2025-10-18T03:15:18.808Z",
+      "status": "SUCCESS",
+      "confidence": 0.75,
+      "selectors": {
+        "articleContainer": ".dcr-1xdhyk6, article, .fc-item",
+        "title": ".dcr-inqvnp, h2, .fc-item__title",
+        "link": ".dcr-1nulcij, a",
+        "description": ".p, p, .fc-item__standfirst",
+        "image": ".img, img"
+      },
+      "validation": {
+        "articlesFound": 3417,
+        "samplesAnalyzed": 7,
+        "titlesExtracted": 7,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 0
+      }
+    },
+    "huffpost.com": {
+      "site": "huffpost.com",
+      "extractedAt": "2025-10-18T03:14:37.561Z",
+      "status": "SUCCESS",
+      "confidence": 0.85,
+      "selectors": {
+        "articleContainer": ".card, article",
+        "title": ".card__headlines, h2",
+        "link": ".card__headline, a",
+        "description": ".p, p",
+        "image": ".img-sized__img, img"
+      },
+      "validation": {
+        "articlesFound": 1194,
+        "samplesAnalyzed": 9,
+        "titlesExtracted": 9,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 3
+      }
+    },
+    "independent.co.uk": {
+      "site": "independent.co.uk",
+      "extractedAt": "2025-10-18T03:16:08.252Z",
+      "status": "SUCCESS",
+      "confidence": 0.85,
+      "selectors": {
+        "articleContainer": ".sc-1t3uya-0, article",
+        "title": ".sc-9tb5ao-0, h2",
+        "link": ".sc-1iq2l92-1, a",
+        "description": ".p, p",
+        "image": ".sc-1mc30lb-0, img"
+      },
+      "validation": {
+        "articlesFound": 9,
+        "samplesAnalyzed": 9,
+        "titlesExtracted": 9,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 9
+      }
+    },
+    "nbcnews.com": {
+      "site": "nbcnews.com",
+      "extractedAt": "2025-10-18T20:45:00.000Z",
+      "status": "SUCCESS",
+      "confidence": 0.85,
+      "selectors": {
+        "articleContainer": ".story-item, .multistory-item, .headline-item-container, article",
+        "title": ".multistoryline__headline, .headline-item-container h2, h2, h3",
+        "link": "a[href*=\"/\"]",
+        "description": "p",
+        "image": ".teasePicture img, .multiStoryPicture img, img"
+      },
+      "validation": {
+        "articlesFound": 25,
+        "samplesAnalyzed": 25,
+        "titlesExtracted": 25,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 23,
+        "note": "Updated 2025-10-18 - New DOM structure with story-item and multistory-item classes"
+      }
+    },
+    "nytimes.com": {
+      "site": "nytimes.com",
+      "extractedAt": "2025-10-18T03:24:54.642Z",
+      "status": "SUCCESS",
+      "confidence": 0.65,
+      "selectors": {
+        "articleContainer": ".article, article",
+        "title": ".h2, h2",
+        "link": ".a, a",
+        "description": ".p, p",
+        "image": ".img, img"
+      },
+      "validation": {
+        "articlesFound": 153,
+        "samplesAnalyzed": 0,
+        "titlesExtracted": 0,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 0
+      }
+    },
+    "reuters.com": {
+      "site": "reuters.com",
+      "extractedAt": "2025-10-18T03:26:37.591Z",
+      "status": "SUCCESS",
+      "confidence": 0.85,
+      "selectors": {
+        "articleContainer": ".story-card, article",
+        "title": ".text-module__text__0GDob, h2",
+        "link": ".text-module__text__0GDob, a",
+        "description": ".text-module__text__0GDob, p",
+        "image": ".img, img"
+      },
+      "validation": {
+        "articlesFound": 423,
+        "samplesAnalyzed": 12,
+        "titlesExtracted": 12,
+        "descriptionsExtracted": 7,
+        "imagesExtracted": 3
+      }
+    },
+    "telegraph.co.uk": {
+      "site": "telegraph.co.uk",
+      "extractedAt": "2025-10-18T03:18:10.657Z",
+      "status": "SUCCESS",
+      "confidence": 0.75,
+      "validation": {
+        "samplesAnalyzed": 20
+      }
+    },
+    "usatoday.com": {
+      "site": "usatoday.com",
+      "extractedAt": "2025-10-18T20:46:00.000Z",
+      "status": "SUCCESS",
+      "confidence": 0.85,
+      "selectors": {
+        "articleContainer": ".gnt_m_sb, article",
+        "title": ".gnt_m_sb_hl, h2, h3",
+        "link": "a[href*=\"/story/\"], a[href*=\"/picture-gallery/\"], a[href*=\"/videos/\"]",
+        "description": "p",
+        "image": ".gnt_m_sb_i img, img"
+      },
+      "validation": {
+        "articlesFound": 16,
+        "samplesAnalyzed": 16,
+        "titlesExtracted": 16,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 16,
+        "note": "Updated 2025-10-18 - Filtered to .gnt_m_sb (story blocks) only, avoiding ads/widgets"
+      }
+    },
+    "washingtonpost.com": {
+      "site": "washingtonpost.com",
+      "extractedAt": "2025-10-18T03:25:04.864Z",
+      "status": "SUCCESS",
+      "confidence": 0.85,
+      "selectors": {
+        "articleContainer": ".left, article",
+        "title": ".headline, h2",
+        "link": ".art-link, a",
+        "description": ".p, p",
+        "image": ".border-box, img"
+      },
+      "validation": {
+        "articlesFound": 363,
+        "samplesAnalyzed": 16,
+        "titlesExtracted": 16,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 5
+      }
+    },
+    "wsj.com": {
+      "site": "wsj.com",
+      "extractedAt": "2025-10-18T03:25:42.100Z",
+      "status": "SUCCESS",
+      "confidence": 0.65,
+      "selectors": {
+        "articleContainer": ".article, article",
+        "title": ".h2, h2",
+        "link": ".a, a",
+        "description": ".p, p",
+        "image": ".img, img"
+      },
+      "validation": {
+        "articlesFound": 0,
+        "samplesAnalyzed": 0,
+        "titlesExtracted": 0,
+        "descriptionsExtracted": 0,
+        "imagesExtracted": 0
+      }
+    }
+  }
+}

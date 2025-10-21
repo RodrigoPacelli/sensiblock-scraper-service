@@ -7,6 +7,7 @@
 
 import { MockActor as Actor } from '../mock-apify-actor.js';
 import { PlaywrightCrawler } from 'crawlee';
+import { buildStartRequests, extractArticlesWithSelectors } from './utils/site-loader.js';
 
 console.log('[Local] 🔧 Using MockActor for local execution');
 
@@ -31,111 +32,60 @@ console.log(`📊 Max articles per site: ${maxArticlesPerSite}`);
 
 const allArticles = [];
 
-// Build start URLs - UNIVERSAL: accept any URL
-const startUrls = [];
-for (const siteOrUrl of sites) {
-    try {
-        // Check if it's a full URL or just a domain
-        let url, domain, source;
+const { startRequests, warnings } = buildStartRequests(sites);
+const siteArticleCount = new Map();
 
-        if (siteOrUrl.startsWith('http://') || siteOrUrl.startsWith('https://')) {
-            // Full URL
-            url = siteOrUrl;
-            const urlObj = new URL(url);
-            domain = urlObj.hostname.replace('www.', '');
-            source = domain.split('.')[0].toUpperCase(); // ex: 'reuters' -> 'REUTERS'
-        } else {
-            // Just domain
-            url = `https://${siteOrUrl}`;
-            domain = siteOrUrl.replace('www.', '');
-            source = domain.split('.')[0].toUpperCase();
-        }
+warnings.forEach((warning) => console.warn(`⚠️ ${warning}`));
 
-        startUrls.push({
-            url,
-            userData: {
-                site: domain,
-                source,
-                section: domain
-            }
-        });
-
-        console.log(`📍 Added: ${url} (source: ${source})`);
-    } catch (error) {
-        console.error(`❌ Invalid URL: ${siteOrUrl}`, error.message);
-    }
-}
-
-if (startUrls.length === 0) {
+if (startRequests.length === 0) {
     console.error('❌ No valid URLs to scrape!');
     await Actor.exit();
 }
 
-console.log(`📋 Total URLs to scrape: ${startUrls.length}`);
+console.log(`📋 Total URLs to scrape: ${startRequests.length}`);
 
-// Playwright crawler
+// Playwright crawler with Chromium system binary
 const crawler = new PlaywrightCrawler({
-    maxRequestsPerCrawl: startUrls.length * 5, // Allow multiple pages per site
+    maxRequestsPerCrawl: startRequests.length * 5,
     maxConcurrency: 2,
+    browserPoolOptions: {
+        useFingerprints: false,
+        preLaunchHooks: [
+            async (pageId, launchContext) => {
+                launchContext.launchOptions = {
+                    executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
+                    headless: true,
+                    args: [
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox',
+                        '--disable-dev-shm-usage',
+                        '--disable-gpu'
+                    ]
+                };
+            }
+        ]
+    },
     async requestHandler({ page, request }) {
-        const { site, source, section } = request.userData;
+        console.log(`🔍 Processing: ${request.url}`);
 
-        console.log(`🔍 Scraping: ${request.url}`);
-
-        // Wait for page to load
-        await page.waitForLoadState('domcontentloaded', { timeout: 10000 }).catch(() => {
-            console.log(`⚠️  Timeout waiting for ${request.url}`);
+        await page.goto(request.url, { waitUntil: 'domcontentloaded', timeout: 45000 }).catch((error) => {
+            console.warn(`⚠️  Navigation issue on ${request.url}: ${error.message}`);
         });
 
-        // Extract articles using generic selectors that work on most news sites
-        const articles = await page.$$eval(
-            'article, .card, [class*="article"], [class*="story"], [class*="item"], [data-testid*="article"], [data-component*="article"]',
-            (elements, sectionName) => {
-                return elements.map(el => {
-                    // Try multiple selectors for title
-                    const titleEl = el.querySelector('h1, h2, h3, h4, [class*="headline"], [class*="title"], a[href*="/"]');
+        await page.waitForTimeout(3000);
 
-                    // Try multiple selectors for link
-                    const linkEl = el.querySelector('a[href*="/"]') || titleEl?.closest('a');
+        const articles = await extractArticlesWithSelectors(page, request, console);
 
-                    // Try multiple selectors for description
-                    const descEl = el.querySelector('p, [class*="description"], [class*="summary"], [class*="excerpt"]');
+        const domainKey = request.userData?.site || new URL(request.url).hostname;
+        const alreadyCollected = siteArticleCount.get(domainKey) || 0;
+        const remaining = Math.max(maxArticlesPerSite - alreadyCollected, 0);
+        const limited = remaining > 0 ? articles.slice(0, remaining) : [];
 
-                    // Try multiple selectors for image
-                    const imgEl = el.querySelector('img, picture img');
+        siteArticleCount.set(domainKey, alreadyCollected + limited.length);
 
-                    if (!titleEl || !linkEl) return null;
+        console.log(`📊 Extracted ${limited.length}/${articles.length} articles from ${request.userData?.source || request.url}`);
 
-                    const href = linkEl.href;
-                    // Filter out non-article links
-                    if (!href || href.includes('#') || href.includes('javascript:') ||
-                        href.includes('mailto:') || href.includes('tel:')) {
-                        return null;
-                    }
-
-                    return {
-                        title: titleEl.textContent?.trim(),
-                        url: href,
-                        description: descEl?.textContent?.trim() || '',
-                        imageUrl: imgEl?.src || imgEl?.getAttribute('data-src') || '',
-                        section: sectionName
-                    };
-                }).filter(Boolean);
-            },
-            section
-        );
-
-        // Add source to each article
-        const articlesWithSource = articles.map(article => ({
-            ...article,
-            source,
-            publishedAt: new Date().toISOString(),
-            scrapedAt: new Date().toISOString()
-        }));
-
-        allArticles.push(...articlesWithSource);
-
-        console.log(`✅ Extracted ${articles.length} articles from ${source} - ${section}`);
+        allArticles.push(...limited);
     },
     failedRequestHandler({ request }) {
         console.error(`❌ Request failed: ${request.url}`);
@@ -144,7 +94,7 @@ const crawler = new PlaywrightCrawler({
 
 // Run crawler
 console.log('🚀 Starting crawler...');
-await crawler.run(startUrls);
+await crawler.run(startRequests);
 
 // Remove duplicates
 const uniqueArticles = removeDuplicates
