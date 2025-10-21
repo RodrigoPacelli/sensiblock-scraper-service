@@ -1,0 +1,29 @@
+name: Deploy Scraper Service
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Easypanel Deploy
+        run: |
+          response=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            http://31.97.131.161:3000/api/deploy/8cf0ab9951adfefe46b922d8974bcaf7b06c18c2ff92cc7b)
+
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+
+          echo "HTTP Status: $http_code"
+          echo "Response: $body"
+
+          if [ "$http_code" -ne 200 ] && [ "$http_code" -ne 201 ]; then
+            echo "❌ Deploy failed with status $http_code"
+            exit 1
+          fi
+
+          echo "✅ Deploy triggered successfully"
