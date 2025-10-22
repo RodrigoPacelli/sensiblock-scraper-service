@@ -2,79 +2,16 @@ import { Actor } from 'apify';
 import { PlaywrightCrawler } from 'crawlee';
 import { setupProxy } from './proxy/index.js';
 
-// Configuração otimizada com seletores multi-nível (headlines, articles, fallback)
-const SITE_CONFIGS = {
-    'edition.cnn.com': {
-        domain: 'edition.cnn.com',
-        name: 'CNN',
-        baseUrl: 'https://edition.cnn.com',
-        // URLs de seções para navegação profunda
-        sections: [
-            'https://edition.cnn.com',                    // Homepage
-            'https://edition.cnn.com/world',              // World
-            'https://edition.cnn.com/politics',           // Politics
-            'https://edition.cnn.com/business',           // Business
-            'https://edition.cnn.com/health',             // Health
-            'https://edition.cnn.com/entertainment',      // Entertainment
-            'https://edition.cnn.com/tech',               // Tech
-            'https://edition.cnn.com/style',              // Style
-            'https://edition.cnn.com/travel',             // Travel
-            'https://edition.cnn.com/sports',             // Sports
-            'https://edition.cnn.com/videos'              // Videos
-        ],
-        // Seletores genéricos para capturar TODOS os cards
-        selectors: {
-            headlines: {
-                container: 'li.card.container',
-                title: [
-                    'span.container__headline',
-                    '.container__headline',
-                    'h2',
-                    'h3'
-                ],
-                link: ['a'],
-                image: ['img'],
-                description: [
-                    '.container__description',
-                    'p'
-                ]
-            },
-            articles: {
-                container: 'li.card.container',
-                title: [
-                    'span.container__headline',
-                    '.container__headline',
-                    'h3',
-                    'h2'
-                ],
-                link: ['a'],
-                image: ['img'],
-                description: [
-                    '.container__description',
-                    'p'
-                ]
-            },
-            fallback: {
-                container: 'div.container, article, .card',
-                title: [
-                    'span.container__headline',
-                    '.container__headline',
-                    'h2',
-                    'h3',
-                    '.headline__text'
-                ],
-                link: ['a'],
-                image: ['img'],
-                description: ['p', '.description']
-            }
-        },
-        confidence: 0.95
-    }
-};
+import { loadSelectors } from './load-selectors-patch.js';
+
+// Load selectors from consolidated config
+const SITE_CONFIGS = loadSelectors();
 
 await Actor.init();
 
-const input = await Actor.getInput();
+// Leitura manual do input da variável de ambiente
+const input = process.env.APIFY_INPUT ? JSON.parse(process.env.APIFY_INPUT) : (await Actor.getInput());
+console.log("[DEBUG] Actor.getInput() result:", input);
 const {
     sites = ['edition.cnn.com'], // Default: apenas CNN
     maxArticlesPerSite = 500, // Aumentado para capturar TUDO
@@ -339,7 +276,17 @@ const crawler = new PlaywrightCrawler({
 });
 
 // Add URLs to the queue - incluindo todas as seções
-for (const site of sites) {
+// Normalizar sites: extrair domain se for URL completa
+const normalizedSites = sites.map(site => {
+    try {
+        return new URL(site).hostname;
+    } catch {
+        return site;
+    }
+});
+console.log("[DEBUG] normalizedSites:", normalizedSites);
+
+for (const site of normalizedSites) {
     if (SITE_CONFIGS[site]) {
         const config = SITE_CONFIGS[site];
 
@@ -411,6 +358,12 @@ console.log('\n📊 Proxy Usage Statistics:');
 console.log(JSON.stringify(provider.getStats(), null, 2));
 
 // Save the output
+// Save the output
 await Actor.pushData(output);
+
+// Print output with markers for server.js to parse
+console.log("__APIFY_OUTPUT_START__");
+console.log(JSON.stringify(output));
+console.log("__APIFY_OUTPUT_END__");
 
 await Actor.exit();

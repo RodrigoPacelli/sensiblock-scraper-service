@@ -13,6 +13,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import os from 'os';
 
+// NOVO: Importar clientes AI e Firestore
+import { classifyBatch } from './ai-classifier-client.js';
+import { saveClassifiedArticles } from './firestore-client.js';
+
+import { filterNewArticles } from "./filter-new-articles.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -24,12 +29,14 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
 // Queue: apenas 1 scraper por vez
-const queue = new QueueManager(1);
+const queue = new QueueManager(10);
 
 // Métricas
 let totalRuns = 0;
 let successfulRuns = 0;
 let failedRuns = 0;
+let totalArticlesClassified = 0;
+let totalArticlesSaved = 0;
 
 /**
  * Health check endpoint
@@ -47,7 +54,9 @@ app.get('/health', (req, res) => {
       totalRuns,
       successfulRuns,
       failedRuns,
-      successRate: totalRuns > 0 ? (successfulRuns / totalRuns * 100).toFixed(2) + '%' : '0%'
+      successRate: totalRuns > 0 ? (successfulRuns / totalRuns * 100).toFixed(2) + '%' : '0%',
+      totalArticlesClassified,
+      totalArticlesSaved
     },
     memory: {
       heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
@@ -114,6 +123,24 @@ app.post('/scrape', async (req, res) => {
     });
 
     successfulRuns++;
+
+    // NOVO: Classificar artigos com IA e salvar no Firestore
+    if (result.articles && result.articles.length > 0) {
+      try {
+        console.log(`[Server] 🤖 Classifying ${result.articles.length} articles with AI...`);
+        const classified = await classifyBatch(result.articles);
+
+        console.log(`[Server] 💾 Saving ${classified.length} classified articles to Firestore...`);
+        const saveResult = await saveClassifiedArticles(classified);
+
+        totalArticlesClassified += classified.length;
+        totalArticlesSaved += saveResult.saved;
+
+        console.log(`[Server] ✅ AI+Firestore: ${classified.length} classified, ${saveResult.saved}/${saveResult.total} saved`);
+      } catch (aiError) {
+        console.error(`[Server] ❌ AI/Firestore error:`, aiError.message);
+      }
+    }
 
     const duration = Date.now() - startTime;
     console.log(`\n✅ Scrape completed in ${(duration / 1000).toFixed(2)}s\n`);
@@ -220,6 +247,32 @@ app.post('/scrape-batch', async (req, res) => {
         totalArticles += result.totalResults || 0;
 
         console.log(`[Server] ✅ ${url}: ${result.totalResults} articles (${(urlDuration / 1000).toFixed(2)}s)`);
+
+        // NOVO: Classificar artigos com IA e salvar no Firestore
+        if (result.articles && result.articles.length > 0) {
+          try {
+            // NOVO: Filtrar artigos duplicados ANTES da IA
+            const { newArticles, existingCount } = await filterNewArticles(result.articles);
+            console.log(`[Server] 🔍 Filtered: ${newArticles.length} new, ${existingCount} already exist`);
+
+            if (newArticles.length === 0) {
+              console.log(`[Server] ⏭️  All articles already classified, skipping AI`);
+            } else {
+              console.log(`[Server] 🤖 Classifying ${newArticles.length} new articles with AI...`);
+              const classified = await classifyBatch(newArticles);
+
+              console.log(`[Server] 💾 Saving ${classified.length} classified articles to Firestore...`);
+              const saveResult = await saveClassifiedArticles(classified);
+
+              totalArticlesClassified += classified.length;
+              totalArticlesSaved += saveResult.saved;
+
+              console.log(`[Server] ✅ AI+Firestore: ${classified.length} classified, ${saveResult.saved}/${saveResult.total} saved`);
+            }
+          } catch (aiError) {
+            console.error(`[Server] ❌ AI/Firestore error:`, aiError.message);
+          }
+        }
 
         // Aplicar intervalo entre URLs (exceto após a última)
         if (interval > 0 && i < urls.length - 1) {
@@ -384,7 +437,7 @@ function formatUptime(seconds) {
  */
 async function runActorScript(input) {
   return new Promise((resolve, reject) => {
-    const actorPath = path.join(__dirname, 'apify-actor-lib/main-local.js');
+    const actorPath = path.join(__dirname, 'apify-actor-lib/main.js');
 
     console.log(`[runActor] 🎬 Starting actor execution`);
     console.log(`[runActor] 📂 Actor path: ${actorPath}`);
@@ -511,7 +564,7 @@ app.listen(PORT, () => {
   console.log(`   - Max concurrent scrapers: 1`);
   console.log(`   - Memory limit per job: 1GB`);
   console.log(`   - Timeout per job: 5 minutes`);
-  console.log(`   - Actor path: ./apify-actor-lib/main-local.js`);
+  console.log(`   - Actor path: ./apify-actor-lib/main.js`);
   console.log('\n' + '='.repeat(80) + '\n');
 });
 
